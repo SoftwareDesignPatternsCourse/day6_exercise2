@@ -3,6 +3,10 @@ import java.net.URISyntaxException;
 
 import com.movie.api.ApiResponse;
 import com.movie.api.MovieApiRequestBuilder;
+import com.movie.command.ActorRenderCommand;
+import com.movie.command.MovieRenderCommand;
+import com.movie.model.ApiMovieResponseAdapter;
+import com.movie.model.MovieHolder;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,13 +40,7 @@ public class MovieAppController {
 	@FXML
 	private ImageView posterView;
 
-	@FXML
-	private void showAlarm(ActionEvent event) {
-		event.consume();
-		alarmPanelHot.setVisible(!alarmPanelHot.isVisible());
-		alarmPanelCold.setVisible(!alarmPanelCold.isVisible());
-	}
-
+	
 	@FXML
 	private void findMovie(ActionEvent event) {
 		event.consume();
@@ -90,9 +88,14 @@ public class MovieAppController {
 			movieApiRequestBuilder.addApiKey(apiKey);
 			movieApiRequestBuilder.addMovie(movieName);
 			ApiResponse response = movieApiRequestBuilder.build().get();
-			System.out.println(response.responseBody());
-			System.out.println(getSelection());
-			showImage();
+			ApiMovieResponseAdapter adapter = new ApiMovieResponseAdapter(response);
+			MovieHolder.getInstance().clearCommands();
+			if (getSelection().equalsIgnoreCase("movie")) {
+				MovieHolder.getInstance().addCommand(new MovieRenderCommand(this.posterView, this.movieName, adapter ));
+			} else {
+				MovieHolder.getInstance().addCommand(new ActorRenderCommand( this.movieName, adapter ));
+			}
+			MovieHolder.getInstance().setTheCurrentMovie(adapter);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
@@ -101,12 +104,6 @@ public class MovieAppController {
 		}
 	}
 
-	private void showImage() {
-		String imageUrl = "https://m.media-amazon.com/images/M/MV5BOTA5NjhiOTAtZWM0ZC00MWNhLThiMzEtZDFkOTk2OTU1ZDJkXkEyXkFqcGdeQXVyMTA4NDI1NTQx._V1_SX300.jpg";
-		Image image = new Image(imageUrl);
-        
-        // Set the loaded image to the ImageView
-        this.posterView.setImage(image);
-	}
+	
 
 }
