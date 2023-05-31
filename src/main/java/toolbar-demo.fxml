@@ -11,10 +11,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="MovieAppController">
     <top>
         <ToolBar styleClass="toolbar">
-            <Button text="Weather" onAction="#printHelloWorld">
+            <Button text="Movies">
                 <graphic>
                     <ImageView>
                         <image>
@@ -31,10 +33,21 @@
     <center>
         <VBox styleClass="content">
 	        <VBox>
+		        <HBox>
+			        <fx:define>
+			        	<ToggleGroup fx:id="displayToggle" />
+					</fx:define>
+					<RadioButton text="Movie" fx:id="movieRadioButton" toggleGroup="$displayToggle" />
+					<RadioButton text="Actor" fx:id="actorRadioButton" toggleGroup="$displayToggle" />
+	    		</HBox>
 			    <TextField fx:id="movieNameField" promptText="Enter a movie"/>
 			    <Button text="Get Movie Details" onAction="#findMovie"/>
 			    <Label fx:id="messageLabel" text=""></Label>
 			</VBox>
+			<VBox>
+			<ImageView fx:id="posterView" />
+			</VBox>
+			
 			<VBox>
 				<Label fx:id="movieName" text=""></Label>
 				<Label fx:id="movieActors" text=""></Label>

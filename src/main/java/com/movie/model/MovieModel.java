@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovieModel implements Movie {
+public class MovieModel {
 	@JsonProperty("Title")
 	private String Title;
 	@JsonProperty("Year")
@@ -14,6 +14,7 @@ public class MovieModel implements Movie {
 	@JsonProperty("Actors")
 	private String Actors;
 	private String Plot;
+	private String Poster;
 	public String getTitle() {
 		return Title;
 	}
@@ -43,6 +44,12 @@ public class MovieModel implements Movie {
 	}
 	public void setPlot(String plot) {
 		Plot = plot;
+	}
+	public String getPoster() {
+		return Poster;
+	}
+	public void setPoster(String poster) {
+		Poster = poster;
 	}
 	
 }
